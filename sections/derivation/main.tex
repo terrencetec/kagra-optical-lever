@@ -1,0 +1,76 @@
+\section{Derivation}
+This section is organized as follows, we will first derive a very basic sensing matrix, assuming there's no misalignment in the optical system.
+And then, we will derive the general sensing matrix that includes all sorts of misalignment.
+Lastly, we will modify the matrix for a folded optical lever configuration.
+\subsection{Very basic derivation}
+In the simplest case, the beam position $x_1$ (along the incidence plane) is related to the angular displacement $\theta$ by
+\begin{equation}
+	x_1=\left(2r\right)\theta,
+\end{equation}
+where $r$ is the lever arm defined by the distance between the reflective surface and the sensing device.
+The same beam can be used to measure the longitudinal displacement of the reflective surface, if the light beam has an angle of incidence $\alpha$.
+In this case, the beam displacement reads
+\begin{equation}
+	x_1=\left(2r\right)\theta + \left(2\sin{\alpha}\right)x_L,
+	\label{eqn:beam_displacement_l}
+\end{equation}
+where $x_L$ is the longitudinal displacement of the reflective surface.
+As can be seen, equation.~\eqref{eqn:beam_displacement_l} shows a coupled sensor where it reads both the angular displacement and the longitudinal shift.
+In KAGRA, some optical levers have a second sensor measuring the beam displacement $x_2$ some distance $d$ behind a convex lens with focal length $f$.
+In this case, we obtain the second beam displacement $x_2$ via ray transfer matrices \cite{enwiki:1018856234}
+\begin{equation}
+	\begin{pmatrix}
+		x_2\\
+		\cdot
+	\end{pmatrix}
+	=
+	\begin{bmatrix}
+		1 & d\\
+		0 & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1 & 0\\
+		-1/f & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1 & r_\mathrm{lens} \\
+		0 & 1
+	\end{bmatrix}
+	\begin{pmatrix}
+		\left(2\sin{\alpha} \right)x_L\\
+		2\theta
+	\end{pmatrix},
+\end{equation}
+where $r_\mathrm{lens}$ is the distance between the reflective surface and the lens.
+This gives
+\begin{equation}
+	x_2 = \left(2\sin\alpha\right)\left(1-\frac{d}{f}\right)x_L + 2\left[\left(1-\frac{d}{f}\right)r_\mathrm{lens}+d\right]\theta. 
+	\label{eqn:beam_displacement_lens_1}
+\end{equation}
+Furthermore, we can place the second beam displacement sensor distance behind the lens.
+So, if we set
+\begin{equation}
+	d=\frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f},
+	\label{eqn:d}
+\end{equation}
+then the angular coupling, i.e. the second term in Eqn.~\eqref{eqn:beam_displacement_lens_1}, becomes zero, effectively making the second beam displacement sensor a ``length'' (length as in longitudinal displacement) sensing device.
+If Eqn.~\eqref{eqn:d} is satisfied, then the beam displacement measured by the second senor reads
+\begin{equation}
+	x_2 = \frac{-2f\sin\alpha}{r_\mathrm{lens}-f}x_L.
+\end{equation}
+Then, from here, we can diagonalize the sensors.
+Consider a state-space model $\vec{y}=\mathbf{C}\vec{x}$, where $\vec{y}\equiv\begin{pmatrix}x_1\\x_2\end{pmatrix}$ are the measurements, and $\vec{x}\equiv\begin{pmatrix}x_L\\\theta\end{pmatrix}$ are the states.
+Here, the $\mathbf{C}$ matrix is
+\begin{equation}
+	\mathbf{C}=
+	\begin{bmatrix}
+		2\sin\alpha & 2r\\
+		\frac{-2f\sin\alpha}{r_\mathrm{lens}-f} & 0
+	\end{bmatrix},
+\end{equation}
+which is not a diagonal matrix.
+The goal is to define another measurement basis $\vec{y'}$ such that $\vec{y'}=\mathbf{C'}\vec{x}$, where $\mathbf{C'}$ is a diagonal matrix.
+It's obvious that If we define $\vec{y'}\equiv\mathbf{C}^{-1}\vec{y}$, then $\mathbf{C'}$ becomes the identity, which is a diagonal matrix.
+Therefore, we define $\mathbf{C}^\mathrm{-1}$ to be the sensing matrix, which maps sensor measurements to the displacements of the reflective surface.
+
+\subsection{Misalignment}
