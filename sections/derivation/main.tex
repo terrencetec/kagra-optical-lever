@@ -599,8 +599,8 @@ where
 	\end{bmatrix}.
 	\label{eqn:sensing_matrix_misaling_vertical}
 \end{multline}
-Note that Eqn.~\eqref{eqn:sensing_matrix_misaling_horizontal} and Eqn.~\eqref{eqn:sensing_matrix_misaling_vertical} is not the same.
-The difference is in the rotational correction.
+Note that Eqn.~\eqref{eqn:sensing_matrix_misaling_horizontal} and Eqn.~\eqref{eqn:sensing_matrix_misaling_vertical} are not the same.
+The difference is in the rotational correction, i.e. the last row of the second matrix.
 And, for a vertical setup, $r_v\approxeq r$, $r_h\approxeq r\cos\alpha_v$, $r_{\mathrm{lens},v}\approxeq r_\mathrm{lens}$, and that the length-sensing QPD is placed at $d_v \approxeq d = \frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}+\delta_d$.
 
 \subsubsection{Misalignment summary}
@@ -612,6 +612,13 @@ Lastly, we write down the sensing matrix with misalignment for a horizontal opti
 
 
 \subsection{Folded optical lever}
+.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=104mm]{figures/folded_optical_lever}
+	\caption{A schematic of the folded optical lever setup in KAGRA.}
+	\label{fig:foldedopticallever}
+\end{figure}
 
 %We would normally estimate the coupling ratio by measuring $\frac{x_\mathrm{len}'}{\theta_Y}$ at the yaw resonance frequency\footnote{We can estimate the yaw displacement using the tilt-sensing QPD. This is only valid at pure resonance and when there's no external line excitation.}.
 %However, we have two unknowns here, namely $\delta_x$ and $\delta_d$.
