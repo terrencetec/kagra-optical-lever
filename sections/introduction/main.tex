@@ -1,5 +1,5 @@
 \section{Introduction}
-Optical lever is a device used to measure angular displacement of a reflective surface. \cite{bs_sr_tm_optical}
+Optical lever (OpLev) is a device used to measure angular displacement of a reflective surface.
 It consists of a light source (e.g. superluminescent LED), the reflective surface (e.g. the suspended main optics), and beam position sensing device (e.g. Quadphotodiode (QPD)).
 In KAGRA, the beam used by the optical lever can also be used to measure the longitudinal displacement (along the reflective normal) of the reflective surface.
 This is done by sensing the beam position behind a convex lens.
@@ -7,13 +7,10 @@ Although the phrase ``optical lever'' refers to the angular sensing part of the 
 
 There are two types of optical levers that are used as displacement sensors in KAGRA, regular and folded (the one used in MCo).
 The regular optical lever system can be subdivided into two types, horizontal (e.g. those for Type-A and Type-Bp suspensions) and vertical (e.g. Those for Type-B suspensions).
-Without loss of generality, we will derive the optical lever sensing matrix with a tilted plane of incidence.
-The derivation of the sensing matrix of a regular type is slightly different then that of a folded optical lever system.
-We will first derive the sensing matrix of a regular type and then modify it to fit a folded optical lever system.
+In this document, we will focus mainly on the regular one and derive the sensing matrices for both horizontal and vertical configuration.
+We will also discuss some misalignment of the optical lever, which leads to cross-coupling between different degrees of freedom in the sensing readout.
+At last, we will provide some methods to obtain the sensing matrices.
 
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.7\linewidth]{example-image-a}
-	\caption{Different types of optical lever displacement sensing systems in KAGRA}
-	\label{fig:different_types_of_optical_levers}
-\end{figure}
+This document is organized as follows.
+In Sec.~\ref{sec:derivation}, the derivation of the sensing matrices for KAGRA's optical lever is provided.
+In Sec.~\ref{sec:measuring_the_sensing_matrix_parameters}, we provided some ways to obtain the parameters in the sensing matrix that we have derived in Sec.~\ref{sec:derivation}.

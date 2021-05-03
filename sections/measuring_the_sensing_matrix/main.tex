@@ -1,1 +1,136 @@
-\section{Measuring the sensing matrix}
+\section{Measuring the sensing matrix parameters\label{sec:measuring_the_sensing_matrix_parameters}}
+%As much as I would like to describe fully how we can obtain the sensing matrix, I cannot do so due to a restricted time frame.
+%If there's enough demand\footnote{Spam my email: ttltsang@link.cuhk.edu.hk, or submit an issue to the Github repository of this document \url{https://www.github.com/terrencetec/kagra-optical-lever}.}, I will consider writing this section in full detail.
+%Instead, I will lay down the idea and I am pretty sure you all can figure out how to do so.
+Before going into the details, I would like to mention that measuring the parameters is \textbf{not} important.
+It is not important anyway because all we need is the sensing matrix, but not the parameters.
+And there're simpler ways to obtain the sensing matrix.
+Also, we should say here, there's no way to obtain the parameters accurately.
+It's impossible.
+Instead, we are assuming that the misalignment parameters are small.
+From here, we can roughly estimate the parameters in the sensing matrix.
+
+If we want to use the sensing matrix \eqref{eqn:sensing_matrix_misaling_horizontal}, we need to find a few parameters.
+Some are directly measurable or known, and some are not.
+In particular, we need to find the lever arm from the optics to the tilt-sensing QPD $r$, the lever arm from the optics to the lens $r_\mathrm{lens}$, the angle of incidences $\alpha_h$ and $\alpha_v$, the position of the beam spot at the optics plane $\delta_x$ and $\delta_y$, the rotational angles $\phi_\mathrm{tilt}$ and $\phi_\mathrm{len}$, the focal length $f$, and the length-sensing QPD misplacement $\delta_d$.
+Table~\ref{table:sensing_matrix_parameters} summarizes the parameters that we need to find. For a vertical setup, we know $\alpha_v$, but not $\alpha_h$.
+
+\begin{table}[!h]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Parameter & Physical meaning & Measurable?\\
+		\hline
+		$r$ & lever arm from the optics to the tilt-sensing QPD plane & yes\\
+		\hline
+		$r_\mathrm{lens}$ & lever arm from the optics to the lens plane & yes\\
+		\hline
+		$\alpha_h$ & Angle of incidence of the beam projected on a horizontal plane & yes/no\\%\footnote{Roughly estimated fromt he CAD model. Closely related to the position of the viewports.}\\
+		\hline
+		$\alpha_v$ &  Angle of incidence of the beam projected on a vertical plane & no/yes\\
+		\hline
+		$\delta_x$ & Beam spot horizontal offset from the rotational center at the optics plane & no\\
+		\hline
+		$\delta_y$ & Beam spot vertical offset from the rotational center at the optics plane & no\\
+		\hline
+		$\phi_\mathrm{tilt}$ & Rotational angle between the ``yaw-pitch'' frame and the tilt-sensing QPD frame & no\\
+		\hline
+		$\phi_\mathrm{len}$ & Rotational angle between the ``yaw-pitch'' frame and the length-sensing QPD frame & no\\
+		\hline
+		$f$ & Focal length of the convex lens & known\\
+		\hline
+		$\delta_d$ & Misplacement of the length-sensing QPD from the $d=\frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}$ point & no\\
+		\hline
+	\end{tabular}
+	\caption{Parameters of the sensing matrix for a horizontal/vertical optical lever layout.}
+	\label{table:sensing_matrix_parameters}	
+\end{table}
+
+\subsection{Measuring the rotational angles $\phi_\mathrm{tilt}$ and $\phi_\mathrm{len}$}
+First we need to align the QPD axes to the desired frame, i.e. finding $\phi_\mathrm{tilt}$ and $\phi_\mathrm{len}$.
+For $\phi_\mathrm{tilt}$, we need to identify resonance frequencies of the pure pitch and pure yaw resonances, $f_\mathrm{pitch}$ and $f_\mathrm{yaw}$.
+Then, we excite the optics using the coil magnet actuators.
+Note here, we must excite the optics with white noise only.
+The best way is to ``kick'' the suspensions and measure the free swing spectra.
+However, this is not always possible because the resonances might have very low Q-value and so the amplitude decays very quickly to a level lower than the sensor noise.
+We cannot use a single frequency line injection, or else we cannot distinguish cross-coupling between from the sensors and from the actuators.
+
+If we excite the optics, we will see two peaks at resonances frequencies $f_\mathrm{pitch}$ and $f_\mathrm{yaw}$ in both $x_\mathrm{tilt}$ and $y_\mathrm{tilt}$ spectra.
+We can pick one of them.
+If we pick $f_\mathrm{pitch}$, then we can calculate the angle by
+\begin{equation}
+	\tan\phi_\mathrm{tilt} = -\frac{x_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)}{y_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)},
+	\label{eqn:phi_tilt_from_pitch}
+\end{equation}
+where $x_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)$ is the amplitude spectral density at frequency $f_\mathrm{pitch}$, and $y_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)$ is the amplitude spectral density at frequency $f_\mathrm{pitch}$.
+Note here, $\frac{x_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)}{y_\mathrm{tilt}\mleft(f_\mathrm{pitch}\mright)}$ is in fact a transfer function and has relative phase.
+In theory, the phase should be either $0^\circ$ or $\pm180^\circ$.
+We need to add an additional minus sign if the phase is at $\pm180^\circ$.
+
+If we choose $f_\mathrm{yaw}$, then we can calculate the angle by
+\begin{equation}
+	\tan\phi_\mathrm{tilt} = \frac{y_\mathrm{tilt}\mleft(f_\mathrm{yaw}\mright)}{x_\mathrm{tilt}\mleft(f_\mathrm{yaw}\mright)}.
+	\label{eqn:phi_tilt_from_yaw}
+\end{equation}
+It's normal that the resulting angle calculated by Eqn.~\eqref{eqn:phi_tilt_from_pitch} and Eqn.~\eqref{eqn:phi_tilt_from_yaw} are not matched.
+This can be explained by non-negligible $\delta_x$ and $\delta_y$, which tilts the pure yaw and pure pitch axes asymmetrically.
+If they differ by a lot, then this method automatically fails here.
+If they are similar, then let's just pick one or simply pick the average, or even somewhere randomly between.
+%But this is not usually the case.
+%That's why there's a motivation for having separate rotation angles horizontal and vertical QPD axes.
+%But we don't discuss further here.
+
+Now, for the angle $\phi_\mathrm{len}$, assuming small misalignment, let's excite the longitudinal mode at resonance frequency $f_\mathrm{longitudinal}$.
+Then, the angle can be calculated using
+\begin{equation}
+	\tan\phi_\mathrm{len} = \frac{x_\mathrm{len}\mleft(f_\mathrm{longitudinal}\mright)}{y_\mathrm{len}\mleft(f_\mathrm{longitudinal}\mright)}.
+\end{equation}
+Again, note the phase between $x_\mathrm{len}$ and $y_\mathrm{len}$.
+For a vertical setup, we can calculate the angle using
+\begin{equation}
+	\tan\phi_\mathrm{len} = -\frac{y_\mathrm{len}\mleft(f_\mathrm{longitudinal}\mright)}{x_\mathrm{len}\mleft(f_\mathrm{longitudinal}\mright)}.
+\end{equation}
+
+\subsection{Measuring misplacement of the length-sensing QPD $\delta_d$ \label{sec:measuring_misplacement}}
+Now, for a horizontal optical lever, with the rotational angles obtained, we can read $x_\mathrm{len}'=\cos\phi_\mathrm{len}x_\mathrm{len}+\sin\phi_\mathrm{len}y_\mathrm{len}$.
+Using Eqn.~\eqref{eqn:x_len_misplaced_qpd}, we see that, without a yaw motion, the misplacement $\delta_d$ can be found by
+\begin{equation}
+	\delta_d = -\left(\frac{x_\mathrm{len}'}{x_L}+\frac{2f\sin\alpha_h}{r_\mathrm{lens}-f}\right)\frac{f}{2\sin\alpha_h}.
+\end{equation}
+And, for a vertical setup, assuming no pitch, we get
+\begin{equation}
+	\delta_d = -\left(\frac{y_\mathrm{len}'}{x_L}+\frac{2f\sin\alpha_v}{r_\mathrm{lens}-f}\right)\frac{f}{2\sin\alpha_v}.
+\end{equation}
+	
+Here, we assume that $r_\mathrm{lens}$, $\alpha_h$ (for horizontal setup), $\alpha_v$ (for vertical setup), and $f$ are known.
+The problem is how to get $x_L$.
+For suspensions with an upper stage, such as preisolator, we can offset the whole suspension in longitudinal direction using the actuators at upper stages, and we can measure $x_L$ at that stage.
+Doing so, we assume that the sensors at the upper stage are diagonalized and are better calibrated.
+In this sense, this approach is better for the vertical setup because a preisolator can never offset the suspension in pitch!
+
+\subsection{Measuring angle of incidences $\alpha_h$ and $\alpha_v$}
+For a horizontal setup, $\alpha_h$ is known, and we need to measure $\alpha_v$.
+To do so, we can use the same trick used in Sec.~\ref{sec:measuring_misplacement} and offset the whole suspension chain in longitudinal direction.
+Using Eqn.~\eqref{eqn:y_tilt'}, we can straightforwardly write down the angle $\alpha_v$, assuming no pitch,
+\begin{equation}
+	\sin\alpha_v = \frac{y_\mathrm{tilt}'}{2x_L}.
+\end{equation}
+For a vertical setup, assuming no yaw,
+\begin{equation}
+	\sin\alpha_h = \frac{x_\mathrm{tilt}'}{2x_L}.
+\end{equation}
+Again, $x_L$ here is estimated from a sensor at the upper stages, which are diagonalized and calibrated.
+
+\subsection{Measuring the beam offsets $\delta_x$ and $\delta_y$}
+Now, we have all the parameters except the beam offsets $\delta_x$ and $\delta_y$.
+So, let's plug all the parameters into Eqn.~\eqref{eqn:sensing_matrix_misaling_horizontal} and Eqn.~\eqref{eqn:sensing_matrix_misaling_vertical} to get some temporary longitudinal readout $\left(x_{L,\mathrm{temp}},\, \theta_{P,\mathrm{temp}},\, \theta_{Y,\mathrm{temp}}\right)$.
+Then, we can excite the pitch and yaw resonances at $f_\mathrm{pitch}$ and $f_\mathrm{yaw}$, and measure the spectra using the temporary readouts.
+The offsets can be obtained straightforwardly by
+\begin{equation}
+	\delta_x = \frac{x_{L,\mathrm{temp}}\mleft(f_\mathrm{yaw}\mright)}{\theta_{Y,\mathrm{temp}}\mleft(f_\mathrm{yaw}\mright)},
+\end{equation}
+and
+\begin{equation}
+	\delta_y = \frac{x_{L,\mathrm{temp}}\mleft(f_\mathrm{pitch}\mright)}{\theta_{P,\mathrm{temp}}\mleft(f_\mathrm{pitch}\mright)}.
+\end{equation}
+And this concludes all the measurements needed to obtain the whole sensing matrix.

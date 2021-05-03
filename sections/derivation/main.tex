@@ -1,22 +1,47 @@
-\section{Derivation}
+\section{Derivation \label{sec:derivation}}
 This section is organized as follows, we will first derive a very basic sensing matrix\footnote{Here, we define the sensing matrix to be a matrix that maps sensor readouts to the displacements that we want to measure.}, assuming there's no misalignment in the optical system.
 And then, we will derive the general sensing matrix that includes all sorts of misalignment.
 Lastly, we will modify the matrix for a folded optical lever configuration.
+
+In Sec.~\ref{sec:very_basic_derivation}, we will first derive the optical lever beam displacement due to a rotate and longitudinal shift of the sensing surface. 
+In Sec.~\ref{sec:optical_levers_in_kagra}, we will derive the optical lever sensing matrix with a tilted plane of incidence, and reduce it to a horizontal and vertical configuration.
+In Sec.~\ref{sec:misalignment}, we discuss some cross-coupling mechanism due to misalignment and correct the sensing matrice accordingly.
+We also briefly touched on the folded optical lever configuration and discussed a cross-coupling mechanism exclusive to this setup, and provided a solution for this.
 \subsection{Very basic derivation \label{sec:very_basic_derivation}}
-In the simplest case, the beam position $x_1$ (along the incidence plane) is related to the angular displacement $\theta$ by
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=73mm]{figures/optical_lever_rotation}
+	\caption{A rotated reflective surface (the suspended optics) caused the optical lever beam to displace.}
+	\label{fig:opticalleverrotation}
+\end{figure}
+In the simplest case, as shown in Fig.~\ref{fig:opticalleverrotation}, the beam position $x_1$ (along the incidence plane) is related to the angular displacement $\theta$ by
 \begin{equation}
 	x_1=\left(2r\right)\theta,
+	\label{eqn:x1}
 \end{equation}
 where $r$ is the lever arm defined by the distance between the reflective surface and the sensing device.
-The same beam can be used to measure the longitudinal displacement of the reflective surface, if the light beam has an angle of incidence $\alpha$.
+The same beam can be used to measure the longitudinal displacement of the reflective surface, if the light beam has an angle of incidence $\alpha$, as shown in Fig.~\ref{fig:opticallevershifted}.
 In this case, the beam displacement reads
 \begin{equation}
 	x_1=\left(2r\right)\theta + \left(2\sin{\alpha}\right)x_L,
 	\label{eqn:beam_displacement_l}
 \end{equation}
 where $x_L$ is the longitudinal displacement of the reflective surface.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=72mm]{figures/optical_lever_shifted}
+	\caption{A shift of the optical lever beam due to longitudinal shift of the reflective surface (the suspended optics).}
+	\label{fig:opticallevershifted}
+\end{figure}
 As can be seen, equation.~\eqref{eqn:beam_displacement_l} shows a coupled sensor where it reads both the angular displacement and the longitudinal shift.
-In KAGRA, some optical levers have a second sensor measuring the beam displacement $x_2$ some distance $d$ behind a convex lens with focal length $f$.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=134mm]{figures/optical_lever_lens}
+	\caption{A second beam displacement sensor sensing the beam postion behind a lens.}
+	\label{fig:opticalleverlens}
+\end{figure}
+In KAGRA, some optical levers have a second sensor measuring the beam displacement $x_2$ some distance $d$ behind a convex lens with focal length $f$, as shown in Fig.~\ref{fig:opticalleverlens}.
 In this case, we obtain the second beam displacement $x_2$ via ray transfer matrices \cite{enwiki:1018856234}
 \begin{equation}
 	\begin{pmatrix}
@@ -280,14 +305,14 @@ In general, the angle of incidence, arm lengths, and focal length are known.
 Therefore, Eqn.~\eqref{eqn:sensing_matrix_horizontal} and \eqref{eqn:sensing_matrix_vertical} can be used as initial sensing matrices for the Type-Bp/Type-A and Type-B optical levers, respectively.
 
 
-\subsection{Cross-coupling due to misalignment}
+\subsection{Cross-coupling due to misalignment\label{sec:misalignment}}
 Eqn.~\eqref{eqn:sensing_matrix_horizontal} and \eqref{eqn:sensing_matrix_vertical} give initial sensing matrices for converting the QPD readouts $\left(x_\mathrm{tilt},\,y_\mathrm{tilt},\,x_\mathrm{len},\,y_\mathrm{len}\right)$ to longitudinal $x_L$, pitch $\theta_P$, and yaw $\theta_Y$.
 However they are ``initial'' sensing matrix only
 There might still be residual cross-couplings between channels and the sensing matrices must be processed to minimize these couplings.
-In this section, we will discuss 3 mechanisms due to misalignment of the optical lever that could lead to cross-coupling between the three displacements.
+In this section, we will discuss 3 mechanisms due to misalignment of the optical lever that could lead to cross-coupling between the three displacements, namely, rotation of the QPD frame, miscentering of the QPD beam at the optics plane, and misplacement of the length-sensing QPD.
 And, we will modify Eqn.~\eqref{eqn:sensing_matrix_general} accordingly.
 
-\subsubsection{Rotation}
+\subsubsection{Rotated QPD frame}
 There's no reason why the QPD is exactly aligned to the a desired frame in the first place.
 In fact, the QPD frame can easily be rotated with respective to the desired frame.
 There are many ways how this could happen.
@@ -311,8 +336,10 @@ This means that, the primed horizontal displacement $x_\mathrm{tilt}'$ reads
 and the primed vertical displacement reads
 \begin{equation}
 	y_\mathrm{tilt}'=\left(2r_v\right)\theta_P + \left(2\sin\alpha_v\right)x_L.
+	\label{eqn:y_tilt'}
 \end{equation}
-These should be the quantities that we are reading, but instead, we are reading the QPD readouts $x_\mathrm{tilt}$ and $y_\mathrm{tilt}$.
+These are the quantities that we should be reading.
+But instead, we are reading the QPD readouts $x_\mathrm{tilt}$ and $y_\mathrm{tilt}$, which are not aligned with $x_\mathrm{tilt}'$ and $y_\mathrm{tilt}'$.
 
 Here, the primed frame is a rotated by an angle $\phi_\mathrm{tilt}$ compared to the QPD frame.
 Hence, we can relate the two frames via 
@@ -376,8 +403,8 @@ If the sensitivities don't match, then there will be large fluctuation in the QP
 There's also an important note here.
 The rotational transformation should be applied directly to the QPD beam spot displacements readout, not the calibrated yaw-pitch readouts.
 This is as basic as knowing that matrices don't commute.
-But, for some reason people, were still doing this in KAGRA, where a rotation was applied to the initially calibrated yaw and pitch readout.
-This can, of course, decouple yaw and pitch.
+If to mix the order of matrix multiplication,
+this can, of course, still decouple yaw and pitch.
 But, it will completely mess up the calibration because pitch and yaw don't necessarily have the same lever arm coupling.
 
 \subsubsection{Miscentered beam spot \label{sec:miscentered_beam_spot}}
@@ -388,7 +415,7 @@ In this case, rotation-to-longitudinal cross-couplings will be introduced.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=80mm]{figures/miscentered}
-	\caption{The beam spot of the optical lever beam at the optics plane is miscentered by an amount of $\delta_x$ horizontally with respect to the rotational axis.}
+	\caption{The beam spot of the optical lever beam at the optics plane is miscentered by an amount of $\delta_x$ horizontally with respect to the rotational axis. Note that the yaw angle $\theta_Y$ is largely exaggerated.}
 	\label{fig:miscentered}
 \end{figure}
 Fig.~\ref{fig:miscentered} shows a horizontally miscentered optical lever beam.
@@ -532,7 +559,7 @@ Firstly, the longitudinal displacement will be miscalibrated, if we don't know t
 Secondly, we cannot estimate the misplacement $\delta_d$, unless we know the beam spot offset $\delta_x$, or vice-versa.
 But, as we shall see later, there's a chance that we can estimate $\delta_d$ by from the inter-calibration between the optical lever and the displacements from sensors of upper stages.
 
-\subsubsection{Horizontal optical lever (with misalignment)}
+\subsubsection{Horizontal optical levers (with misalignment)}
 Without further derivation, we can right the sensing matrix for a horizontal setup,
 \begin{equation}
 	\begin{pmatrix}
@@ -567,7 +594,7 @@ where
 and we've further assumed a nonzero vertical angle of incidence $\alpha_v$, as part of the misalignment.
 And again, for a horizontal setup, $r_h\approxeq r$, $r_v\approxeq r\cos\alpha_h$, $r_{\mathrm{lens},h}\approxeq r_\mathrm{lens}$, and that the length-sensing QPD is placed at $d_h \approxeq d = \frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}+\delta_d$.
 
-\subsubsection{Vertical optical lever (with misalignment)}
+\subsubsection{Vertical optical levers (with misalignment)}
 Similarly, we can write the sensing matrix for a vertical setup,
 \begin{equation}
 	\begin{pmatrix}
@@ -590,7 +617,7 @@ where
 	\begin{bmatrix}
 		2\sin\alpha_h & 2\delta_y\sin\alpha_h & 2\delta_x\sin\alpha_h + 2r_h\\
 		2\sin\alpha_v & 2\delta_y\sin\alpha_v + 2r_v & 2\delta_x\sin\alpha_v\\
-		\frac{-2f\sin\alpha_h}{r_\mathrm{lens}-f} - \frac{2\delta_d\sin\alpha_h}{f} & \frac{-2f\delta_y\sin\alpha_h}{r_\mathrm{lens}-f} & \frac{-2f\delta_x\sin\alpha_h}{r_\mathrm{lens}-f} - 2\delta_d\left(\frac{r_\mathrm{lens}-f}{f}\right)
+		\frac{-2f\sin\alpha_v}{r_\mathrm{lens}-f} - \frac{2\delta_d\sin\alpha_v}{f} & \frac{-2f\delta_y\sin\alpha_v}{r_\mathrm{lens}-f} & \frac{-2f\delta_x\sin\alpha_v}{r_\mathrm{lens}-f} - 2\delta_d\left(\frac{r_\mathrm{lens}-f}{f}\right)
 	\end{bmatrix}^{-1}\\
 	\begin{bmatrix}
 		\cos\phi_\mathrm{tilt} & \sin\phi_\mathrm{tilt} & 0 & 0\\
@@ -600,7 +627,6 @@ where
 	\label{eqn:sensing_matrix_misaling_vertical}
 \end{multline}
 Note that Eqn.~\eqref{eqn:sensing_matrix_misaling_horizontal} and Eqn.~\eqref{eqn:sensing_matrix_misaling_vertical} are not the same.
-The difference is in the rotational correction, i.e. the last row of the second matrix.
 And, for a vertical setup, $r_v\approxeq r$, $r_h\approxeq r\cos\alpha_v$, $r_{\mathrm{lens},v}\approxeq r_\mathrm{lens}$, and that the length-sensing QPD is placed at $d_v \approxeq d = \frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}+\delta_d$.
 
 \subsubsection{Misalignment summary}
@@ -611,15 +637,96 @@ We then discussed the effect of misplaced length-sensing QPD, by an amount of $\
 Lastly, we write down the sensing matrix with misalignment for a horizontal optical lever and vertical optical lever, in Eqn.~\eqref{eqn:sensing_matrix_misaling_horizontal} and Eqn.~\eqref{eqn:sensing_matrix_misaling_vertical}, respectively.
 
 
-\subsection{Folded optical lever}
-.
+\subsection{Folded optical lever \label{sec:folded_optical_lever}}
+In this section, we will briefly introduce the folder optical lever layout.
+We will explain the main difference between a normal optical lever and a folded one.
+We will also introduce some cross-coupling mechanism that is exclusive to this setup.
+But we will not go into deep details and writing down equations like Eqn.~\eqref{eqn:sensing_matrix_misalign}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=104mm]{figures/folded_optical_lever}
 	\caption{A schematic of the folded optical lever setup in KAGRA.}
 	\label{fig:foldedopticallever}
 \end{figure}
+Fig.~\ref{fig:foldedopticallever} shows a folded optical lever setup.
+This is a rare setup used for some optics, whose chamber doesn't have a viewport for the beam to exit after the first reflection.
+In this configuration, the light beam hits the optics with an incidence angle of $\alpha_1$, and travels some distances $r_1$ towards a folding mirror inside the chamber.
+The beam then hits the folding mirror with an incidence angle of $\alpha_2$, and travels along $r_2$ back to the optics.
+At last, the beam hits the optics again with a difference angle of incidneces $\alpha_3$, and then travels $r_3$ to reach the QPD, which measures the beam spot displacement $x_\mathrm{tilt}$.
 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=181mm]{figures/folded_optical_lever_rtm}
+	\caption{A yaw of the optics can be treated as three path segments $r_1$, $r_2$, and $r_3$ in a folded optical lever configuration.}
+	\label{fig:foldedopticalleverrtm}
+\end{figure}
+Let's consider an angular displacement in yaw, as shown in Fig.~\ref{fig:foldedopticalleverrtm}.
+Black line formed by $r_1$, $r_2$, and $r_3$ is the original path of the beam.
+As can be inferred from Eqn.~\eqref{eqn:x1}, a rotation of the optics, say by an amount $\theta_Y$ is equivalent to adding an angle $2\theta_Y$ to the beam path.
+Hence, the angles of the path $r_1$ and $r_2$ are $2\theta_Y$, and that of $r_3$ is $2\theta_Y + 2\theta_Y=4\theta_Y$ (reflected twice).
+So, the displacement of the beam spot at the QPD plane can be straightforwardly derived via the ray transfer matrix,
+\begin{equation}
+	\begin{pmatrix}
+		x_\mathrm{tilt}\\
+		\cdot
+	\end{pmatrix}
+	=
+	\begin{bmatrix}
+		1 & r_1+r_2\\
+		0 & 1
+	\end{bmatrix}
+	\begin{pmatrix}
+		0\\
+		2\theta_Y
+	\end{pmatrix}
+	+
+	\begin{bmatrix}
+		1 & r_3\\
+		0 & 1
+	\end{bmatrix}
+	\begin{pmatrix}
+		0\\
+		4\theta_Y
+	\end{pmatrix},
+\end{equation}
+which gives
+\begin{equation}
+	x_\mathrm{tilt} = \left(2r_1+2r_2+4r_3\right)\theta_Y.
+\end{equation}
+
+Now, let's consider a longitudinal shift of the optics.
+Similar to that of a regular optical lever, a longituidnal displacement is going to introduce a beam shift of $\left(2\sin\alpha_1\right)x_L$ at the first reflection.
+A second beam shift of $\left(-2\sin\alpha_3\right)x_L$ is introduced in the return path to the QPD.
+This gives a total beam spot displacement of $2\left(\sin\alpha_1-\sin\alpha_3\right)x_L$ at the QPD plane.
+Without loss of generality, let's write down the beam spot displacement due to a rotation in yaw and a longitudinal shift,
+\begin{equation}
+	x_\mathrm{tilt} = \left(2r_1+2r_2+4r_3\right)\theta_Y + 2\left(\sin\alpha_1-\sin\alpha_3\right)x_L.
+	\label{eqn:x_tilt_folded}
+\end{equation}
+Comparing Eqn.~\eqref{eqn:beam_displacement_l} and Eqn.~\eqref{eqn:x_tilt_folded}, we see that the effective arm length of yaw is 4 times that of a regular optical lever, if we assume $r_1=r_2=r_3=r$.
+Also, if the incidence angles $\alpha_1$ and $\alpha_3$ are exactly the same, then the QPD readout will be completely decoupled from longituindal displacement of the optics.
+However, this cannot be true if we consider a configuration as shown in Fig.~\ref{fig:foldedopticallever}.
+The angle of incidence $\alpha_3$ is related to the other angle of incidences by
+\begin{equation}
+	\alpha_3 = \alpha_1+2\alpha_2.
+\end{equation}
+Having equal $\alpha_1$ and $\alpha_3$ would necessarily implies that $\alpha_2=0$.
+This means that the beam goes back to via the same path and returns to the light source, which is physically impossible.
+Therefore, there exists this irremovable longitudinal-to-yaw coupling.
+Not to mention, the cross-coupling due to miscentered beam, as discussed in Sec.~\ref{sec:miscentered_beam_spot}, still exist and is also irremovable.
+
+\subsubsection{Augmented folded optical lever}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=81mm]{figures/folded_optical_lever_augmented}
+	\caption{Folded optical lever augmented by adding a second folding mirror.}
+	\label{fig:foldedopticalleveraugmented}
+\end{figure}
+As is discussed in the Sec.~\ref{sec:folded_optical_lever}, the QPD will sense both yaw and longitudinal displacement due to asymmetric angle of incidences between the forward and return path.
+Here, as shown in Fig.~\ref{fig:foldedopticalleveraugmented}, we propose an augmented configuration where a second folding mirror is added.
+In this configuration, the we can finely tweak the orientation of the second folding mirror to equalize the angle of incidences $\alpha_1$ and $\alpha_3$.
+This way we can minimize the longitudinal coupling due to difference in angle of incidences.
+However, this cannot fix the problem as discussed in Sec.~\ref{sec:miscentered_beam_spot}, so there will be residual uncertain coupling due to a miscentered beam.
 %We would normally estimate the coupling ratio by measuring $\frac{x_\mathrm{len}'}{\theta_Y}$ at the yaw resonance frequency\footnote{We can estimate the yaw displacement using the tilt-sensing QPD. This is only valid at pure resonance and when there's no external line excitation.}.
 %However, we have two unknowns here, namely $\delta_x$ and $\delta_d$.
 %So, we cannot estimate the misplacement of the length-sensing QPD and the miscentering of the beam spot.
