@@ -158,63 +158,97 @@ Here, note that the beam in Fig.~\ref{fig:kagralengthopticallever3d} is common t
 \end{figure}
 
 Let's say the horizontal lever arm from the optics to the convex lens is $r_{\mathrm{lens},h}$.
-Again, using ray transfer matrix, we can write down the  beam spot displacement at the length-sensing QPD,
+Again, using ray transfer matrix, we can write down the beam spot displacement at the length-sensing QPD,
 \begin{equation}
-	x_\mathrm{len} = \left(2\sin\alpha_h\right)\left(1-\frac{d_h}{f}\right)x_L + 2\left[\left(1-\frac{d_h}{f}\right)r_{\mathrm{lens},h},+d_h\right]\theta_Y,
+	x_\mathrm{len} = \left(2\sin\alpha_h\right)\left(1-\frac{d_h}{f_h}\right)x_L + 2\left[\left(1-\frac{d_h}{f_h}\right)r_{\mathrm{lens},h},+d_h\right]\theta_Y\,,
 	\label{eqn:x_len}
 \end{equation}
-where $d_h$ is the length between the lens and the length-sensing QPD on the horizontal plane, and $f$ is the focal length of the lens.
-It follows that when $d_h=\frac{r_{\mathrm{lens},h}f}{r_{\mathrm{lens},h}-f}$, $x_\mathrm{len}$ is decoupled from yaw.
-But, $d_h$ is a distance on the horizontal plane.
-To get back the length, $d$, we can simply use a similar triangle relationship, as shown in Fig.~\ref{fig:dh},
+where $d_h$ is the length between the lens and the length-sensing QPD onto the horizontal plane, and $f_h$ is the focal length of the lens projected onto the horizontal plane\footnote{Thanks Ushiba-san for pointing out the necessity of projecting the focal length onto the horizontal plane in addition to the lever arms \cite{comment_to_setup_of_length_sensing_oplev_for_itmx}.}.
+Here, we introduce an angle $\theta_h$ between the horizontal plane and the optical lever beam $\vec{r}_\mathrm{lens}$ such that the horizontal arm is
 \begin{equation}
-	\begin{split}
-	d_\mathrm{yaw} + r_\mathrm{lens} &= \left(d_h+r_{\mathrm{lens} h}\right)\frac{r_\mathrm{lens}}{r_{\mathrm{lens},h}},\\
-	d_\mathrm{yaw} &= \left(d_h+r_{\mathrm{lens}, h}\right)\frac{r_\mathrm{lens}}{r_{\mathrm{lens},h}} - r_\mathrm{lens}\\
-	\end{split}
+	r_{\mathrm{lens},h} = \left\lvert \vec{r}_\mathrm{lens} \right\rvert\cos{\theta_h}\,.
+	\label{eqn:r_len_horizontal_projection}
 \end{equation}
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=46mm]{figures/d_h}
-	\caption{A similar triangle formed by the beam and it's projection on the horizontal plane (length-sensing QPD path).}
-	\label{fig:dh}
-\end{figure}
-Here, if we set $d=d_\mathrm{yaw}$, then the horizontal readout of the length-sensing QPD $x_\mathrm{len}$ will have no yaw coupling, i.e.
+The same goes to the length between the length-sensing QPD and the lens, as well as for the focal length,
 \begin{equation}
-	x_\mathrm{len} = \left(\frac{-2f\sin\alpha_h}{r_{\mathrm{lens},h}-f}\right)x_L.
+	d_h = \left\lvert \vec{r}_\mathrm{lens} \right\rvert\cos{\theta_h}\,,
+	\label{eqn:d_horizontal_projection}
 \end{equation}
-However, in this case, the vertical readout $y_\mathrm{len}$ is \textbf{not} decoupled from pitch, in general.
-Now, if we set $d=d_\mathrm{yaw}$, then, on the vertical plane, $d_v$ reads, again, from similar triangle relation,
+and
 \begin{equation}
-	\begin{split}
-	d_v &= \left(d_\mathrm{yaw}+r_\mathrm{lens}\right)\frac{r_{\mathrm{lens},v}}{r_\mathrm{lens}} - r_{\mathrm{lens},v}\\
-	&= \left(d_h+r_{\mathrm{lens},h}\right)\frac{r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}}-r_{\mathrm{lens},v}\\
-	&= \left(\frac{r_{\mathrm{lens},h}f}{r_{\mathrm{lens},h}-f}+r_{\mathrm{lens},h}\right)\frac{r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}}-r_{\mathrm{lens},v}\\
-	&=\left(\frac{r_{\mathrm{lens},h}}{r_{\mathrm{lens},h}-f}-1\right)r_{\mathrm{lens},v}\\
-	&=\frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},h}-f}
-	\end{split}
+	f_h = f\cos{\theta_h}\,.
+	\label{eqn:focal_length_horizontal_projection}
 \end{equation}
-whereas if we want $y_\mathrm{len}$ to be decoupled from pitch, we need to set
+Substituting Eqn.~\eqref{eqn:r_len_horizontal_projection}, \eqref{eqn:d_horizontal_projection}, and \eqref{eqn:focal_length_horizontal_projection} into \eqref{eqn:x_len} yields
 \begin{equation}
-	d_v = \frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},v}-f},
+	x_\mathrm{len} = \left(2\sin\alpha_h\right)\left(1-\frac{d}{f}\right)x_L + 2\cos\theta_h\left[\left(1-\frac{d}{f}\right)r_{\mathrm{lens}}+d\right]\theta_Y\,.
+	\label{eqn:x_len_projection_substituted}
 \end{equation}
-In general, $r_{\mathrm{lens},h}\neq r_{\mathrm{lens},v}$.
-So, we cannot simultaneously decouple pitch and yaw from the length-sensing readout.
-And, if we choose to set $d=d_\mathrm{yaw}$, i.e. to minimize yaw coupling, the vertical length-sensing QPD readout reads
+So, it follows that we need to put the length-sensing QPD at 
 \begin{equation}
-	\begin{split}
-	y_\mathrm{len} &= \left(2\sin\alpha_v\right)\left(1-\frac{d_v}{f}\right)x_L + 2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right]\theta_P\\
-	&= \left(2\sin\alpha_v\right)\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)x_L + 2\left[\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)r_{\mathrm{lens},v} + \frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},h}-f}\right] \theta_P\\
-	&=\left(2\sin\alpha_v\right)\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)x_L
-	+ 2\left[\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}-f}\right)r_{\mathrm{lens},v}\right] \theta_P.
-	\end{split}
+	d = \frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}\,,
+\end{equation}
+which is identical to Eqn.~\eqref{eqn:d}, the result we have derived in Sec.~\ref{sec:very_basic_derivation}.
+Coincidentally, the vertical readout $y_\mathrm{len}$ will be decoupled from pitch $\theta_P$.
+
+Meanwhile, the vertical beam spot displacement at the length-sensing QPD reads
+\begin{equation}
+		y_\mathrm{len} = \left(2\sin\alpha_v\right)\left(1-\frac{d_v}{f_v}\right)x_L + 2\left[\left(1-\frac{d_v}{f_v}\right)r_{\mathrm{lens},v}+d_v\right]\theta_P\,,
 	\label{eqn:y_len}
 \end{equation}
-Here, note that if the length of the projections are equal, i.e. $r_{\mathrm{lens},h}=r_{\mathrm{lens},h}$, then vertical readout of the length-sensing QPD is decoupled from pitch.
-This refers to a rather interesting configuration, where the incidence plane of the beam is rotated $45^\circ$ along the $z$-axis with respect to the vertical plane.
+where $f_v$ is vertical projection of the focal length $f$.
+
+%It follows that when $d_h=\frac{r_{\mathrm{lens},h}f}{r_{\mathrm{lens},h}-f}$, $x_\mathrm{len}$ is decoupled from yaw.
+%But, $d_h$ is a distance on the horizontal plane.
+%To get back the length, $d$, we can simply use a similar triangle relationship, as shown in Fig.~\ref{fig:dh},
+%\begin{equation}
+%	\begin{split}
+%	d_\mathrm{yaw} + r_\mathrm{lens} &= \left(d_h+r_{\mathrm{lens} h}\right)\frac{r_\mathrm{lens}}{r_{\mathrm{lens},h}}\\
+%	d_\mathrm{yaw} &= \left(d_h+r_{\mathrm{lens}, h}\right)\frac{r_\mathrm{lens}}{r_{\mathrm{lens},h}} - r_\mathrm{lens}\,,\\
+%	\end{split}
+%\end{equation}
+%\begin{figure}[!h]
+%	\centering
+%	\includegraphics[width=46mm]{figures/d_h}
+%	\caption{A similar triangle formed by the beam and it's projection on the horizontal plane (length-sensing QPD path).}
+%	\label{fig:dh}
+%\end{figure}
+%Here, if we set $d=d_\mathrm{yaw}$, then the horizontal readout of the length-sensing QPD $x_\mathrm{len}$ will have no yaw coupling, i.e.
+%\begin{equation}
+%	x_\mathrm{len} = \left(\frac{-2f\sin\alpha_h}{r_{\mathrm{lens},h}-f}\right)x_L.
+%\end{equation}
+%However, in this case, the vertical readout $y_\mathrm{len}$ is \textbf{not} decoupled from pitch, in general.
+%Now, if we set $d=d_\mathrm{yaw}$, then, on the vertical plane, $d_v$ reads, again, from similar triangle relation,
+%\begin{equation}
+%	\begin{split}
+%	d_v &= \left(d_\mathrm{yaw}+r_\mathrm{lens}\right)\frac{r_{\mathrm{lens},v}}{r_\mathrm{lens}} - r_{\mathrm{lens},v}\\
+%	&= \left(d_h+r_{\mathrm{lens},h}\right)\frac{r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}}-r_{\mathrm{lens},v}\\
+%	&= \left(\frac{r_{\mathrm{lens},h}f}{r_{\mathrm{lens},h}-f}+r_{\mathrm{lens},h}\right)\frac{r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}}-r_{\mathrm{lens},v}\\
+%	&=\left(\frac{r_{\mathrm{lens},h}}{r_{\mathrm{lens},h}-f}-1\right)r_{\mathrm{lens},v}\\
+%	&=\frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},h}-f}
+%	\end{split}
+%\end{equation}
+%whereas if we want $y_\mathrm{len}$ to be decoupled from pitch, we need to set
+%\begin{equation}
+%	d_v = \frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},v}-f},
+%\end{equation}
+%In general, $r_{\mathrm{lens},h}\neq r_{\mathrm{lens},v}$.
+%So, we cannot simultaneously decouple pitch and yaw from the length-sensing readout.
+%And, if we choose to set $d=d_\mathrm{yaw}$, i.e. to minimize yaw coupling, the vertical length-sensing QPD readout reads
+%\begin{equation}
+%	\begin{split}
+%	y_\mathrm{len} &= \left(2\sin\alpha_v\right)\left(1-\frac{d_v}{f}\right)x_L + 2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right]\theta_P\\
+%	&= \left(2\sin\alpha_v\right)\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)x_L + 2\left[\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)r_{\mathrm{lens},v} + \frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},h}-f}\right] \theta_P\\
+%	&=\left(2\sin\alpha_v\right)\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}-f}{r_{\mathrm{lens},h}-f}\right)x_L
+%	+ 2\left[\left(\frac{r_{\mathrm{lens},h}-r_{\mathrm{lens},v}}{r_{\mathrm{lens},h}-f}\right)r_{\mathrm{lens},v}\right] \theta_P.
+%	\end{split}
+%	\label{eqn:y_len}
+%\end{equation}
+%Here, note that if the length of the projections are equal, i.e. $r_{\mathrm{lens},h}=r_{\mathrm{lens},h}$, then vertical readout of the length-sensing QPD is decoupled from pitch.
+%This refers to a rather interesting configuration, where the incidence plane of the beam is rotated $45^\circ$ along the $z$-axis with respect to the vertical plane.
 
 Without loss of generality, let's assume arbitrary\footnote{They can't be completely arbitrary. They must be related via the angle between the horizontal plane and the plane of incidence. But, I don't want to introduce that unnecessary parameter.} $d_h$ and $d_v$, and write the sensing matrix $\mathbf{C}_\mathrm{align}$ for a perfectly aligned optical lever.
-If we ensemble Eqn.~\eqref{eqn:x_tilt}, \eqref{eqn:y_tilt}, \eqref{eqn:x_len}, and the first line of \eqref{eqn:y_len} into a matrix form, we get
+If we ensemble Eqn.~\eqref{eqn:x_tilt}, \eqref{eqn:y_tilt}, \eqref{eqn:x_len}, and \eqref{eqn:y_len} into a matrix form, we get
 \begin{equation}
 	\begin{pmatrix}
 		x_L\\
@@ -238,8 +272,8 @@ where
 	\begin{bmatrix}
 		2\sin\alpha_h & 0 & 2r_h\\
 		2\sin\alpha_v & 2r_v & 0\\
-		2\sin\alpha_h\left(1-\frac{d_h}{f}\right) & 0 & 2\left[\left(1-\frac{d_h}{f}\right)r_{\mathrm{lens},h}+d_h\right]\\
-		2\sin\alpha_v\left(1-\frac{d_v}{f}\right) &  2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right] & 0\\
+		2\sin\alpha_h\left(1-\frac{d_h}{f_h}\right) & 0 & 2\left[\left(1-\frac{d_h}{f_h}\right)r_{\mathrm{lens},h}+d_h\right]\\
+		2\sin\alpha_v\left(1-\frac{d_v}{f_v}\right) &  2\left[\left(1-\frac{d_v}{f_v}\right)r_{\mathrm{lens},v}+d_v\right] & 0\\
 	\end{bmatrix}^{+},
 \end{equation}
 Here, $\begin{bmatrix}\cdot\end{bmatrix}^{+}$ is the pseudoinverse of $\begin{bmatrix}\cdot\end{bmatrix}$, and $\begin{bmatrix}\cdot\end{bmatrix}^{+}\begin{bmatrix}\cdot\end{bmatrix}=\mathbf{I}$.
@@ -248,8 +282,10 @@ Here, $\begin{bmatrix}\cdot\end{bmatrix}^{+}$ is the pseudoinverse of $\begin{bm
 Eqn.~\eqref{eqn:sensing_matrix_general} gives a general relationship between the QPD readouts and the displacements of the optics without misalignments.
 It can be drastically simplified if we further assume that the incidence plane is aligned to the horizontal plane (e.g. Type-Bp and Type-A) or the vertical plane (e.g. Type-B). 
 For horizontal optical levers, $\alpha_v=0$.
-This gives $y_\mathrm{tilt}=\left(2r_v\right)\theta_P$ and $y_\mathrm{len}=2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right]\theta_P$, which are not independent from each other.
-We can choose to omit the readout $y_\mathrm{len}$ and hence the sensing matrix for a horizontal optical lever is
+%This gives $y_\mathrm{tilt}=\left(2r_v\right)\theta_P$ and $y_\mathrm{len}=2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right]\theta_P$, which are not independent from each other.
+The vertical readout $y_\mathrm{len}$ of the length-sensing QPD is ideally a null stream.
+So, we can choose to omit the readout $y_\mathrm{len}$ such that the sensing matrix becomes full-rank.
+Hence, the sensing matrix for a horizontal optical lever is
 \begin{equation}
 	\begin{pmatrix}
 		x_L\\
@@ -260,7 +296,7 @@ We can choose to omit the readout $y_\mathrm{len}$ and hence the sensing matrix 
 	\begin{bmatrix}
 		2\sin\alpha_h & 0 & 2r_h\\
 		0 & 2r_v & 0\\
-		\frac{-2f\sin\alpha_h}{r_{\mathrm{lens},h}-f} & 0 & 0
+		\frac{-2f\sin\alpha_h}{r_\mathrm{lens}-f} & 0 & 0
 	\end{bmatrix}^{-1}
 	\begin{pmatrix}
 		x_\mathrm{tilt}\\
@@ -269,7 +305,7 @@ We can choose to omit the readout $y_\mathrm{len}$ and hence the sensing matrix 
 	\end{pmatrix},
 	\label{eqn:sensing_matrix_horizontal}
 \end{equation}
-where we've assumed $d=d_h=\frac{r_{\mathrm{lens},h}f}{r_{\mathrm{lens},h}-f}$.
+where we've assumed the placement of the length-sensing QPD is  exactly at $d=d_h=\frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}$ from the convex lens.
 Note that on a horitonzal setup, the beam is on the horizontal plane so the horizontal lever arm $r_h=r$.
 Furthermore, the projection on the vertical plane is simply $r_v=r\cos\alpha_h$.
 Similarly, the horizontal arm displacement from the optics to the lens $r_{\mathrm{lens},h}=r_\mathrm{lens}$.
@@ -286,7 +322,7 @@ Like in Sec.~\ref{sec:horizontal_optical_levers}, without further derivation, we
 	\begin{bmatrix}
 		0 & 0 & 2r_h\\
 		2\sin\alpha_v & 2r_v & 0\\
-		\frac{-2f\sin\alpha_v}{r_{\mathrm{lens},v}-f} & 0 & 0
+		\frac{-2f\sin\alpha_v}{r_\mathrm{lens}-f} & 0 & 0
 	\end{bmatrix}^{-1}
 	\begin{pmatrix}
 		x_\mathrm{tilt}\\
@@ -295,7 +331,7 @@ Like in Sec.~\ref{sec:horizontal_optical_levers}, without further derivation, we
 	\end{pmatrix},
 	\label{eqn:sensing_matrix_vertical}
 \end{equation}
-where we've set $d=d_v=\frac{r_{\mathrm{lens},v}f}{r_{\mathrm{lens},v}-f}$.
+where we've set $d=d_v=\frac{r_\mathrm{lens}f}{r_\mathrm{lens}-f}$.
 Again, for a vertical setup, $r_v=r$, $r_h=r\cos\alpha_v$, and $r_{\mathrm{lens},v}=r_\mathrm{lens}$.
 
 \subsubsection{Short summary}
@@ -503,8 +539,8 @@ To write down the sensing matrix explicitly, we have
 	\begin{bmatrix}
 		2\sin\alpha_h & 0 & 2r_h\\
 		2\sin\alpha_v & 2r_v & 0\\
-		2\sin\alpha_h\left(1-\frac{d_h}{f}\right) & 0 & 2\left[\left(1-\frac{d_h}{f}\right)r_{\mathrm{lens},h}+d_h\right]\\
-		2\sin\alpha_v\left(1-\frac{d_v}{f}\right) &  2\left[\left(1-\frac{d_v}{f}\right)r_{\mathrm{lens},v}+d_v\right] & 0\\
+		2\sin\alpha_h\left(1-\frac{d_h}{f_h}\right) & 0 & 2\left[\left(1-\frac{d_h}{f_h}\right)r_{\mathrm{lens},h}+d_h\right]\\
+		2\sin\alpha_v\left(1-\frac{d_v}{f_v}\right) &  2\left[\left(1-\frac{d_v}{f_v}\right)r_{\mathrm{lens},v}+d_v\right] & 0\\
 	\end{bmatrix}
 	\begin{bmatrix}
 		1 & \delta_y & \delta_x\\
@@ -554,7 +590,7 @@ in this case, the length-sensing QPD reads
 	\label{eqn:x_len_misplaced_qpd},
 \end{equation}
 where the second term and the forth term are additional terms due to misplacement of the length-sensing QPD, and the third term is due to miscentering of the optical lever beam at the optics plane.
-There are two things we can infer from Eqn.~\ref{eqn:x_len_misplaced_qpd}.
+There are two things we can infer from Eqn.~\eqref{eqn:x_len_misplaced_qpd}.
 Firstly, the longitudinal displacement will be miscalibrated, if we don't know the misplacement $\delta_d$.
 Secondly, we cannot estimate the misplacement $\delta_d$, unless we know the beam spot offset $\delta_x$, or vice-versa.
 But, as we shall see later, there's a chance that we can estimate $\delta_d$ by from the inter-calibration between the optical lever and the displacements from sensors of upper stages.
@@ -731,6 +767,6 @@ However, this cannot fix the problem as discussed in Sec.~\ref{sec:miscentered_b
 %However, we have two unknowns here, namely $\delta_x$ and $\delta_d$.
 %So, we cannot estimate the misplacement of the length-sensing QPD and the miscentering of the beam spot.
 
-
+\newpage
 
 
